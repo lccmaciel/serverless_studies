@@ -16,5 +16,8 @@ In this litle study I generated an alternative to the study of [Marcos Godinho](
 
 ## Prerequisites
 
+- [SAM-CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-windows.html)
+
+
 
 
