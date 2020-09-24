@@ -1,0 +1,15 @@
+{
+  "name": "templatets-sam",
+  "version": "1.0.0",
+  "description": "Template TypeScript-SAM",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "prebuild": "rimraf .aws-sam .vscode",
+    "prewatch": "rimraf .aws-sam .vscode",
+    "watch": "webpack-cli -w"
+  },
+  "author": "Luis Carlos Cesar",
+  "license": "ISC"
+}
