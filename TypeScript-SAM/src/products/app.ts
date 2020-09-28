@@ -10,7 +10,7 @@ import globalAxios, { AxiosPromise, AxiosInstance, AxiosResponse } from 'axios';
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
         // const queries = JSON.stringify(event.queryStringParameters);
         
-        const path: string = 'https://gzqz2wr7xg.execute-api.us-east-1.amazonaws.com/dev'
+        const path: string = ''
 
         let p: Promise<AxiosResponse<Product[]>> = new ProductApi({
                                                         basePath: path}).findProductsByStatus()
