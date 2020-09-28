@@ -8,54 +8,63 @@ import globalAxios, { AxiosPromise, AxiosInstance, AxiosResponse } from 'axios';
 import { Configuration } from "./configuration";
 import { ParametersMarvel } from "./ParametersMarvel";
 
-interface Parameters extends APIGatewayProxyEvent {
-    characterId: number;
-}
 
+export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {           
 
-
-export const lambdaHandler = async (event: Parameters): Promise<APIGatewayProxyResult> => {           
-
-        const confMarvel: ParametersMarvel  = new ParametersMarvel()        
-
-        const path: string = 'https://gateway.marvel.com'
-
-        var apiCall : Promise<AxiosResponse<CharacterDataWrapper>> = new PublicApi(null, path).getCharacterIndividual(event.characterId,confMarvel);    
-    
-        var result                                                        
+        var result 
+        var characterId:number                                                       
         
-        var characteres = apiCall.then((res)=>{
+        if(event.pathParameters.characterId==undefined || isNaN(Number(event.pathParameters.characterId)) ){
 
-                              result =  {
-                                statusCode: 200,                                              
-                                body: ""
-                              }                                  
+          result =  {
+            statusCode: 412,
+             body: "Id não informado." + event.pathParameters.characterId
+           }
+
+        }
+        else{
+
+          characterId = Number.parseInt(event.pathParameters.characterId)          
           
-                              //constroi o retorno...
-                              if(res.data.data.results.length>0){
+          const confMarvel: ParametersMarvel  = new ParametersMarvel()        
 
-                                var superHero = {
-                                    nome: res.data.data.results[0].name,
-                                    descricao: res.data.data.results[0].description
+          const path: string = 'https://gateway.marvel.com'
+          
+
+          var apiCall : Promise<AxiosResponse<CharacterDataWrapper>> = new PublicApi(null, path).getCharacterIndividual(characterId,confMarvel);    
+                    
+          var characteres = apiCall.then((res)=>{
+
+                                result =  {
+                                  statusCode: 200,                                              
+                                  body: ""
+                                }                                  
+            
+                                //constroi o retorno...
+                                if(res.data.data.results.length>0){
+
+                                  var superHero = {
+                                      nome: res.data.data.results[0].name,
+                                      descricao: res.data.data.results[0].description
+                                  }
+
+                                  result.body = JSON.stringify(superHero)
+
+                                }
+                                else{
+                              
+                                  result.body = "Heroi nao encontrado"    
+
                                 }
 
-                                result.body = JSON.stringify(superHero)
 
-                              }
-                              else{
-                            
-                                result.body = "Heroi nao encontrado"    
-
-                              }
-
-
-                              }).catch((err)=>{
-                                  result =  {
-                                                 statusCode: 404,
-                                                  body: err
-                                                }
-                              })
-
+                                }).catch((err)=>{
+                                    result =  {
+                                                  statusCode: 404,
+                                                    body: err
+                                                  }
+                                })
+        }                                  
         await characteres        
         return await result                
    }

@@ -1,0 +1,19 @@
+{
+  "name": "templte",
+  "version": "1.0.0",
+  "description": "teste",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lccmaciel/serverless_studies.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lccmaciel/serverless_studies/issues"
+  },
+  "homepage": "https://github.com/lccmaciel/serverless_studies#readme"
+}

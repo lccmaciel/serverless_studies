@@ -15,12 +15,11 @@ Resources:
       CodeUri: src/marvelCharacters
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
-      Role: MarvelCharactersFunctionRole
       Events:
         getCharacter:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /marvelCharacters
+            Path: /marvelCharacters/{characterId}
             Method: get
 
 Outputs:
@@ -29,7 +28,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   MarvelCharactersApi:
     Description: "API Gateway endpoint URL for Prod stage for Marvel Character function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/marvelCharacters/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/marvelCharacters/{characterId}"
   MarvelCharactersFunction:
     Description: "Marvel character Lambda Function ARN"
     Value: !GetAtt MarvelCharactersFunction.Arn
