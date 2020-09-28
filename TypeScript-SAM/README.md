@@ -37,7 +37,57 @@ npm i -g typescript
 
 1. Clone this project.
 
-2. Install the [aws-sam-webpack-plugin](https://www.npmjs.com/package/aws-sam-webpack-plugin) and its dependencies. SAM doesn't have good support for TypeScript. So, this tool replaces the sam build step for AWS SAM CLI projects. This plugin 
+2. Install the [aws-sam-webpack-plugin](https://www.npmjs.com/package/aws-sam-webpack-plugin) and its dependencies. SAM doesn't have good support for TypeScript. This tool replaces the sam build step for AWS SAM CLI projects. This plug still automatically generate VS Code debugging configuration. Finally, it uses a [webpack](https://webpack.js.org/) that allows a much cleaner build and only with the necessary dependencies.
+
+3. Install the axios. This is a promise based HTTP client for the browser and node.js.
+
+```
+npm install axios
+```
+
+4. Install the crypto-js and the @types\crypto-js to generate the MD5 hash to meet the security requirement of the Marvel API portal
+
+
+```
+npm install crytpo-js
+npm install @types\crytpo-js
+```
+
+5. Generate the client using the openapi-generator
+
+
+```
+openapi-generator generate -g typescript-axios -i marvel.json -o ./src/marvelCharacters/.
+```
+
+6. Create a user environment variable with the name NODE_ENV and set the value as "development" initially. It will be used to decide how the build will be generated. If you want to generate a production build, set the value to "production".
+
+7. Open the folder in Visual Code. Through the terminal perform the build. It will generate the same .aws-sam folder when using the SAM build. A folder called .vscode is also generated where you have the configuration so that we can perform the test.
+
+```
+npm run-script build
+```
+8. Test: To test, we will use the SAM local invoke command passing JSON with the super hero Id as an event. This command will raise a listener on port 5858 allowing us to test our Lambda.
+
+```
+sam local invoke -d 5858 -e event.json MarvelCharactersFunction
+```
+
+
+Some superhero ids to use in tests:
+
+.Hulk: 1009351
+.Wolverine: 1009718
+.Thor: 1009664
+.Storm: 1009629
+
+Start the debug (Ctrl + Shift + D). It will use the settings created in the build. Put break points in the typescript code so you can debug.
+
+
+9. Deploy: Run the SAM deploy --guided command.
+
+It will generate the lambda, a role with the necessary permissions and the API. Log into the AWS console, check and test. As everything was generated with CloudFormation, cleaning the environment can also be done in a simple way.
+
 
 
 
